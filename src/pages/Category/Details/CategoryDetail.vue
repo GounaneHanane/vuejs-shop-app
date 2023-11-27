@@ -1,19 +1,13 @@
 <template>
     <div class="row">
       <div class="col-12">
-        <card :title="table1.title">
+        <card :title="'Catégorie: ' + table1.title">
+          <h4>Produits</h4>
           <div class="table-responsive">
             <b-table 
                 striped hover 
                 :items="table1.data" 
                 :fields="table1.columns">
-                <template #cell(actions)="{item}">
-                  <router-link tag="li" :to="{ name: 'category-detail', params: { id: item.id }}">
-                    <a class="btn btn-primary">
-                      <i class="tim-icons icon-align-center"></i>
-                    </a>
-                  </router-link>
-                </template>
             </b-table>
           </div>
         </card>
@@ -25,6 +19,7 @@ import { BaseTable } from "@/components";
 import axios from 'axios';
 import moment from 'moment'
 
+
 const tableColumns = [
     { key: "name", sortable: true, label: 'Nom'},
     { 
@@ -34,8 +29,7 @@ const tableColumns = [
         formatter: (value, key, item) => {
             return moment(item.date_created).format('DD/MM/yyyy')
         }
-    },
-    "actions"
+    }
 ];
 export default {
   components: {
@@ -49,21 +43,18 @@ export default {
   data() {
     return {
       table1: {
-        title: "Catégorie",
+        title: "",
         columns: [...tableColumns],
-        data: [],
-        currentPage: 0,
-        rows: 0,
-        perPage: 2,
+        data: []
       }
     };
   }, 
   mounted () {
     axios
-      .get('http://localhost:8000/api/category/')
+      .get('http://localhost:8000/api/category/'+this.$route.params.id+'/')
       .then(response => {
-            this.table1.data = response.data.results;
-            this.table1.rows = response.data.count
+            this.table1.title = response.data.name;
+            this.table1.data = response.data.products
         })
   }
 };

@@ -6,6 +6,7 @@ import NotFound from "@/pages/NotFoundPage.vue";
 const Dashboard = () => import(/* webpackChunkName: "dashboard" */"@/pages/Dashboard.vue");
 const Category = () => import(/* webpackChunkName: "common" */ "@/pages/Category/CategoryTemplate.vue");
 const Product = () => import(/* webpackChunkName: "common" */ "@/pages/Product/ProductTemplate.vue");
+const CategoryDetail = () => import(/* webpackChunkName: "common" */ "@/pages/Category/Details/CategoryDetail.vue");
 
 const routes = [
   {
@@ -22,6 +23,11 @@ const routes = [
         path: "category",
         name: "category",
         component: Category
+      },
+      { 
+        path: '/category/:id',
+        name: "category-detail",
+        component: CategoryDetail 
       },
       {
         path: "product",
